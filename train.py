@@ -6,9 +6,22 @@ import torch
 import torch.nn as nn
 from torch.optim.lr_scheduler import LambdaLR
 import time
+import random       
+import numpy as np  
 
 from src.model import Transformer
 from data_setup import get_dataloaders, PAD_IDX
+
+# --- 0. 设置随机种子 (为了可复现性) ---
+SEED = 42  # 你可以换成任何你喜欢的数字
+
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+torch.cuda.manual_seed(SEED) # 如果使用 CUDA
+# 这两个设置可以进一步确保 CUDA 上的确定性，但可能会牺牲一点性能
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 # --- 1. 设置超参数 (来自作业 PDF) ---
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
